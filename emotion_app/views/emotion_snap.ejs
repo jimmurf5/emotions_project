@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Calm Container - Emotional Snapshot</title>
+    <link rel="stylesheet" href="mystyles.css">
+    <script>
+        function updateSliderValue(sliderId, displayId) {
+            var slider = document.getElementById(sliderId);
+            var display = document.getElementById(displayId);
+            display.textContent = slider.value;
+        }
+    </script>
+
+    <script>
+        function updateSliderValue(sliderId, displayId) {
+            var slider = document.getElementById(sliderId);
+            var display = document.getElementById(displayId);
+            display.textContent = slider.value;
+        }
+
+        function submitForm() {
+            //need to ensure that an empty array is post if no trigger selected
+            //create an array of triggers will make empty array in case of no trigger
+            var contextTriggerOptions = document.getElementById('contextTrigger').selectedOptions;
+            var contextTriggers = Array.from(contextTriggerOptions).map(option => option.value);
+
+            // Set the value of the hidden input field as an array
+            document.getElementById('contextTriggers').value = JSON.stringify(contextTriggers);
+
+            // Submit the form
+            document.getElementById('emotionalSnapForm').submit();
+        }
+    </script>
+
+</head>
+
+<body>
+    <%- include ('header') %>
+
+        <div class="container">
+            <h2 class="mb-4">Emotional Snapshot</h2>
+
+            <form id="emotionalSnapForm" action="/emotional_snap" method="post">
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="joy">Joy: <img src="/images/robot_joy.png" alt="joy_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="joy" name="joy" min="1" max="10"
+                                value="0" oninput="updateSliderValue('joy', 'joyValue')">
+                            <span id="joyValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="surprise">Surprise: <img src="/images/robot_surprise.png" alt="surprise_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="surprise" name="surprise" min="1"
+                                max="10" value="0" oninput="updateSliderValue('surprise', 'surpriseValue')">
+                            <span id="surpriseValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="anger">Anger: <img src="/images/robot_anger.png" alt="anger_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="anger" name="anger" min="1" max="10"
+                                value="0" oninput="updateSliderValue('anger', 'angerValue')">
+                            <span id="angerValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="disgust">Disgust: <img src="/images/robot_disgust.png" alt="disgust_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="disgust" name="disgust" min="1" max="10"
+                                value="0" oninput="updateSliderValue('disgust', 'disgustValue')">
+                            <span id="disgustValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fear">Fear: <img src="/images/robot_fear.png" alt="fear_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="fear" name="fear" min="1" max="10"
+                                value="0" oninput="updateSliderValue('fear', 'fearValue')">
+                            <span id="fearValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="sadness">Sadness: <img src="/images/robot_sadness.png" alt="Sad_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="sadness" name="sadness" min="1" max="10"
+                                value="0" oninput="updateSliderValue('sadness', 'sadnessValue')">
+                            <span id="sadnessValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6 mx-auto">
+                        <div class="form-group">
+                            <label for="contempt">Contempt: <img src="/images/robot_contempt.png" alt="contempt_image"
+                                    class="emoji"></label>
+                            <input type="range" class="form-control-range" id="contempt" name="contempt" min="1"
+                                max="10" value="0" oninput="updateSliderValue('contempt', 'contemptValue')">
+                            <span id="contemptValue" class="slider-value">0</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="contextTrigger">Contextual Triggers:</label>
+                    <select class="form-control" id="contextTrigger" name="contextTrigger" multiple>
+                        <option value="study">study</option>
+                        <option value="work">work</option>
+                        <option value="family">family</option>
+                        <option value="weather">weather</option>
+                        <option value="financial">financial</option>
+                        <option value="health">health</option>
+                        <option value="the news">the news</option>
+                    </select>
+                </div>
+
+                <!-- Hidden input field to store the contextTriggers value -->
+                <input type="hidden" id="contextTriggers" name="contextTriggers">
+
+                <button type="button" class="btn btn-primary" id="logEmotionBtn" onclick="submitForm()">Log
+                    Emotions</button>
+            </form>
+
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Include Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Delete Snapshot</title>
+    <link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body>
+    <%- include('header') %>
+    <div class="container text-center" id="delete_snap">
+        <h2 class="mb-4">Delete Snapshot</h2>
+
+        <% if (deleteSnap) { %>
+            <!-- Display the single snapshot details -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Joy</th>
+                        <th scope="col">Anger</th>
+                        <th scope="col">Contempt</th>
+                        <th scope="col">Surprise</th>
+                        <th scope="col">Fear</th>
+                        <th scope="col">Disgust</th>
+                        <th scope="col">Sadness</th>
+                        <th scope="col">Contextual Triggers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% deleteSnap.forEach(snapshot => { %>
+                        <tr>
+                            <td><%= new Date(snapshot.time_stamp).toLocaleDateString() %></td>
+                            <td><%= new Date(snapshot.time_stamp).toLocaleTimeString() %></td>
+                            <td><%= snapshot.joy %></td>
+                            <td><%= snapshot.anger %></td>
+                            <td><%= snapshot.contempt %></td>
+                            <td><%= snapshot.surprise %></td>
+                            <td><%= snapshot.fear %></td>
+                            <td><%= snapshot.disgust %></td>
+                            <td><%= snapshot.sadness %></td>
+                            <td>
+                                <!-- Use an ordered list for triggers -->
+                                <ul>
+                                    <% snapshot.triggers.forEach(trigger => { %>
+                                        <li><%= trigger.name %></li>
+                                    <% }); %>
+                                </ul>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <!-- Confirmation message and button -->
+            <p>Are you sure you want to delete this snap?</p>
+            <form class="delete-snap-form" method="POST" action="/delete_snap">
+                <input type="hidden" name="emotion_snap_id" value="<%= deleteSnap[0].emotion_snap_id %>">
+                <button type="submit" class="btn btn-danger">Yes, Delete Snap</button>
+            </form>
+        <% } else { %>
+            <p>No snapshot details available.</p>
+        <% } %>
+    </div>
+
+    <!-- Include Bootstrap JavaScript dependencies from CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

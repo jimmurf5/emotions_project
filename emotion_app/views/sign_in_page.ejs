@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Container - Sign In</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body>
+    <%- include ('header') %>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Sign In</h2>
+
+        <div id="validationMessages" class="text-danger">
+            <% if (typeof errorMessage !== 'undefined') { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= errorMessage %>
+                </div>
+            <% } %>
+        </div>
+
+        <form action="/sign_in_page" method="post">
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn btn-info btn-lg">Sign In</button>
+        </form>
+
+        <p class="mt-3"><a href="/create_account" class="btn btn-primary btn-lg">Create Account</a></p>
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>

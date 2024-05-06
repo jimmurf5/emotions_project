@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charted</title>
+    <link rel="stylesheet" href="mystyles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+
+<body>
+    <%- include ('header') %>
+        <script>
+
+            function calculateAve(dataArray) {
+                const sum = dataArray.reduce((acc, val) => acc + val, 0);
+                const numberOfSnapshots = dataArray.length; // Get the number of snapshots
+                return sum / numberOfSnapshots;
+            }
+
+        </script>
+
+        <div class="chart-container">
+
+            <canvas id="chart"></canvas>
+
+        </div>
+
+        <div class="container mt-4 side-by-side">
+            <div class="row mt-4">
+                <canvas id="donut"></canvas>
+            </div>
+        
+            <div class="row mt-4">
+                <canvas id="polar"></canvas>
+            </div>
+        </div>
+        
+        
+        
+        </div>
+
+
+
+        <script>
+            // Get the canvas element
+            var ctx = document.getElementById('chart').getContext('2d');
+
+            const newXValues = `<%-JSON.stringify(xValues) %>`;
+            const newJoyData = `<%-JSON.stringify(joyData) %>`;
+            const newSurpriseData = `<%-JSON.stringify(surpriseData) %>`;
+            const newAngerData = `<%-JSON.stringify(angerData) %>`;
+            const newDisgustData = `<%-JSON.stringify(disgustData) %>`;
+            const newFearData = `<%-JSON.stringify(fearData) %>`;
+            const newSadnessData = `<%-JSON.stringify(sadnessData) %>`;
+            const newContemptData = `<%-JSON.stringify(contemptData) %>`;
+            const newTriggerData = `<%-JSON.stringify(triggerData) %>`;
+            const newtriggerCountsData = `<%-JSON.stringify(triggerCountsData) %>`;
+            const parsedTriggerCount = JSON.parse(newtriggerCountsData);
+
+            //get the number of snaps by calling length on newJoyData, all emotional data should have the same length
+            const numberSnaps = newJoyData.length;
+
+            //call function to calculate averages
+            const averageJoy = calculateAve(JSON.parse(newJoyData)).toFixed(1);
+            const averageSurprise = calculateAve(JSON.parse(newSurpriseData)).toFixed(1);
+            const averageAnger = calculateAve(JSON.parse(newAngerData)).toFixed(1);
+            const averageDisgust = calculateAve(JSON.parse(newDisgustData)).toFixed(1);
+            const averageFear = calculateAve(JSON.parse(newFearData)).toFixed(1);
+            const averageSadness = calculateAve(JSON.parse(newSadnessData)).toFixed(1);
+            const averageContempt = calculateAve(JSON.parse(newContemptData)).toFixed(1);
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: JSON.parse(newXValues),
+                    datasets: [{
+                        label: 'Joy',
+                        data: JSON.parse(newJoyData),
+                        borderColor: 'yellow',
+                        backgroundColor: 'rgba(255, 255, 0, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Surprise',
+                        data: JSON.parse(newSurpriseData),
+                        borderColor: 'brown',
+                        backgroundColor: 'rgba(165, 42, 42, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Anger',
+                        data: JSON.parse(newAngerData),
+                        borderColor: 'red',
+                        backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Disgust',
+                        data: JSON.parse(newDisgustData),
+                        borderColor: 'green',
+                        backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Fear',
+                        data: JSON.parse(newFearData),
+                        borderColor: 'purple',
+                        backgroundColor: 'rgba(128, 0, 128, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Sadness',
+                        data: JSON.parse(newSadnessData),
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Contempt',
+                        data: JSON.parse(newContemptData),
+                        borderColor: 'violet',
+                        backgroundColor: 'rgba(238, 130, 238, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                    ]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            color: 'black',
+                            text: 'Emotional Values Over Time',
+                            font: {
+                                size: 18
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            suggestedMax: 10,
+                            ticks: {
+                                color: 'black'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'black'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Get the canvas element
+            var ctxTwo = document.getElementById('donut').getContext('2d');
+
+            new Chart(ctxTwo, {
+                type: 'pie',
+                data: {
+                    labels: ['study', 'work', 'family', 'weather', 'financial', 'health', 'the news', 'none'],
+                    datasets: [{
+
+                        data: [
+                            parsedTriggerCount.study,
+                            parsedTriggerCount.work,
+                            parsedTriggerCount.family,
+                            parsedTriggerCount.weather,
+                            parsedTriggerCount.financial,
+                            parsedTriggerCount.health,
+                            parsedTriggerCount.theNews,
+                            parsedTriggerCount.none
+                        ],
+                        backgroundColor: [
+                            'rgb(255, 99, 132)', // Red
+                            'rgb(54, 162, 235)', // Blue
+                            'rgb(255, 205, 86)', // Yellow
+                            'rgb(75, 192, 192)', // Green
+                            'rgb(153, 102, 255)', // Purple
+                            'rgb(255, 159, 64)', // Orange
+                            'rgb(201, 203, 207)', // Gray
+                            'rgb(255, 255, 255)' // White
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+            plugins: {
+                title: {
+                    display: true,
+                    color: 'black',
+                    text: 'Contextual Triggers Selected  ',
+                    font: {
+                        size: 18
+                    }
+                },
+                legend: {
+                    labels: {
+                        color: 'black' // Change legend label color to black
+                    }
+                }
+            }
+        }
+    });
+
+            // Get the canvas element
+            var ctxThree = document.getElementById('polar').getContext('2d');
+
+            new Chart(ctxThree, {
+                type: 'polarArea',
+                data: {
+                    labels: ['joy', 'surprise', 'anger', 'disgust', 'fear', 'sadness', 'contempt'],
+                    datasets: [{
+
+                        data: [
+                            averageJoy,
+                            averageSurprise,
+                            averageAnger,
+                            averageDisgust,
+                            averageFear,
+                            averageSadness,
+                            averageContempt
+                        ],
+                        backgroundColor: [
+                            'rgb(255, 205, 86)', // Yellow
+                            'rgba(165, 42, 42)', //Brown
+                            'rgb(255, 99, 132)', // Red
+                            'rgb(75, 192, 192)', // Green
+                            'rgb(153, 102, 255)', // Purple
+                            'rgb(54, 162, 235)', // Blue
+                            'rgba(238, 130, 238)' //Violet
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+            plugins: {
+                title: {
+                    display: true,
+                    color: 'black',
+                    text: 'Overall Average Value for Each Emotion',
+                    font: {
+                        size: 18
+                    }
+                },
+                legend: {
+                    labels: {
+                        color: 'black' // Change legend label color to black
+                    }
+                }
+            },
+            elements: {
+                arc: {
+                    backgroundColor: 'black' // Change background color of polar chart
+                }
+            }
+        }
+    });
+        </script>
+
+
+
+
+</body>
+
+</html>

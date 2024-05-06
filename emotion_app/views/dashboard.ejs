@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="mystyles.css"> 
+    <title>User Dashboard</title>
+    
+</head>
+<body id="dashboard">
+    <%- include ('header') %>
+    
+    <div class="container mt-4">
+        <h2>Welcome, <%= firstName %>!</h2>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card cardsnap">
+                    <div class="card-body">
+                        <h5 class="card-title">Emotional Snapshot</h5>
+                        <p class="card-text" style="opacity: 0;">Log your emotional state. Padding padding padding pa</p>
+                        <a href="/emotional_snap" class="btn btn-primary btn-block">Log Emotions</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card cardview">
+                    <div class="card-body">
+                        <h5 class="card-title">View Previous Snapshots</h5>
+                        <p class="card-text" style="opacity: 0;">Review your historical emotional snapshots.</p>
+                        <a href="/view_previous_snap" class="btn btn-primary btn-block">View Snapshots</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card cardchart">
+                    <div class="card-body">
+                        <h5 class="card-title">Charts</h5>
+                        <p class="card-text" style="opacity: 0;">padding padding padding padding padding padding padding.</p>
+                        <a href="/chart" class="btn btn-primary btn-block">Charts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4 justify-content-center">
+            <div class="card cardpersonal">
+                <div class="card-body">
+                    <h5 class="card-title">Password</h5>
+                    <p class="card-text" style="opacity: 0;"></p>
+                    <a href="/change_password" class="btn btn-primary btn-sm">Change</a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row mt-4 justify-content-center">
+            <div class="card cardlogout text-center">
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text" style="opacity: 0;"></p>
+                    <a href="/sign_out" class="btn btn-danger btn-sm">Sign Out</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+

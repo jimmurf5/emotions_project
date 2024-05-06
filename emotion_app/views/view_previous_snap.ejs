@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Include Bootstrap CSS from CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>View Previous Snapshots</title>
+    <link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body>
+    <%- include('header') %>
+    <div class="container-fluid">
+        <div class="row">
+            
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="container text-center" id="view_snap">
+                    <h2 class="mb-4">Your previous Snapshots, <%= firstName %>
+                    </h2>
+
+                    <!-- Check if there are previous snapshots -->
+                    <% if (previousSnapshots && previousSnapshots.length> 0) { %>
+                    <!-- Create a Bootstrap table -->
+                    <table class="table">
+                        <!-- Table header -->
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Joy</th>
+                                <th scope="col">Anger</th>
+                                <th scope="col">Contempt</th>
+                                <th scope="col">Surprise</th>
+                                <th scope="col">Fear</th>
+                                <th scope="col">Disgust</th>
+                                <th scope="col">Sadness</th>
+                                <th scope="col">Contextual Triggers</th>
+                                <th scope="col">Edit Triggers</th>
+                                <th scope="col">Delete Snap</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <!-- Loop through each snapshot and create a table row for each -->
+                            <% previousSnapshots.forEach(snapshot=> { %>
+                            <tr>
+                                <!-- Use toLocaleDateString and toLocaleTimeString to format date and time -->
+                                <td>
+                                    <%= new Date(snapshot.time_stamp).toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <%= new Date(snapshot.time_stamp).toLocaleTimeString() %>
+                                </td>
+                                <td>
+                                    <%= snapshot.joy %>
+                                </td>
+                                <td>
+                                    <%= snapshot.anger %>
+                                </td>
+                                <td>
+                                    <%= snapshot.contempt %>
+                                </td>
+                                <td>
+                                    <%= snapshot.surprise %>
+                                </td>
+                                <td>
+                                    <%= snapshot.fear %>
+                                </td>
+                                <td>
+                                    <%= snapshot.disgust %>
+                                </td>
+                                <td>
+                                    <%= snapshot.sadness %>
+                                </td>
+                                <td>
+                                    <% if (snapshot.triggers && snapshot.triggers.length > 0) { %>
+                                    <!-- Use an ordered list for triggers -->
+                                    <ul>
+                                        <% snapshot.triggers.forEach(trigger => { %>
+                                        <li>
+                                            <%= trigger.name %>
+                                        </li>
+                                        <% }); %>
+                                    </ul>
+                                    <% } else { %>
+
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <form class="delete-snap-form" method="POST"
+                                        action="/select_edit_snap">
+                                        <input type="hidden" name="emotion_snap_id"
+                                            value="<%= snapshot.emotion_snap_id %>">
+                                        <button type="submit" class="btn btn-outline-warning">Edit
+                                            Triggers</button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form class="delete-snap-form" method="POST"
+                                        action="/select_delete_snap">
+                                        <input type="hidden" name="emotion_snap_id"
+                                            value="<%= snapshot.emotion_snap_id %>">
+                                        <button type="submit" class="btn btn-outline-danger">Delete
+                                            Snap</button>
+                                    </form>
+
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                    <!-- Display a message if no previous snapshots available -->
+                    <p>No previous snapshots available.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JavaScript dependencies from CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header class="page-specific-header">
+        <img src="/images/possible_logo.png" alt="Logo" class="logo_header">
+        <h3>Calm Container</h3>
+        <% if (!isLoggedIn && !onDash) { %>
+            <!-- If user is not logged in and not on the dashboard, render "Home" button -->
+            <p><a href="/" class="btn btn-primary btn-sm">Home</a></p>
+        <% } else if (isLoggedIn && !onDash) { %>
+            <!-- If user is logged in and not already on the dashboard, render "Dashboard" button -->
+            <p><a href="/dashboard" class="btn btn-primary btn-sm">Dashboard</a></p>
+        <% } %>
+    </header>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calm Container - Create Account</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body>
+    <%- include ('header') %>
+        <div id="validationMessages" class="text-danger"></div>
+
+        <div class="container mt-5">
+            <h2 class="mb-4">Create Account</h2>
+
+            <div id="validationMessages" class="text-danger">
+                <% if (typeof error !== 'undefined') { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+            </div>
+            <form id="createAccountForm" action="/create_account" method="post">
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-info btn-lg" id="createAccountBtn">Create Account</button>
+            </form>
+
+            <p class="mt-3"><a href="/sign_in_page" class="btn btn-primary btn-lg">Sign In</a></p>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+        <script>
+            // Function to check email strength, returns true if email structure valid
+            function checkValidEmail(email) {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+        
+            // Function to check password strength, returns true if password valid
+            function checkPasswordStrength(password) {
+                // Check password strength using complexityRegex expression
+                var complexityRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+                if (!complexityRegex.test(password)) {
+                    return "Password should include at least one uppercase letter, one lowercase letter, one number, and one special character.";
+                }
+                return true; // If the password is strong
+            }
+        
+            // Add an event listener to the form submit event
+            document.getElementById("createAccountForm").addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the form from submitting
+        
+                // Retrieve the form data
+                var firstName = document.getElementById("firstName").value;
+                var lastName = document.getElementById("lastName").value;
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+        
+                // Create JSON object
+                var jsonData = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: password
+                };
+        
+                // Some form validation
+                // Ensure that all fields in form are filled else return and alert message
+                if (!firstName || !lastName || !email || !password) {
+                    document.getElementById("validationMessages").innerText = 'All fields are required';
+                    return;
+                }
+        
+                // Check if the email provided has a valid structure
+                if (!checkValidEmail(email)) {
+                    document.getElementById("validationMessages").innerText = 'Not a valid email address';
+                    return;
+                }
+        
+                // Check password strength
+                var passwordStrength = checkPasswordStrength(password);
+                if (passwordStrength !== true) {
+                    document.getElementById("validationMessages").innerText = 'Password not strong enough';
+                    return;
+                } else {
+                    // Clear any previous validation messages
+                    document.getElementById("validationMessages").innerText = '';
+        
+                    // Submit the form
+                    document.getElementById("createAccountForm").submit();
+                }
+            });
+        </script>
+        
